@@ -5,13 +5,7 @@ use towers::*;
 use map::Map;
 
 fn main() {
-    let mut map = Map::new();
-
-    let path = vec![
-        (1, 1),
-        (2, 2)
-    ];
-    map.set_path(path);
+    let mut map = Map::new_map1();
 
     println!("Hello, world!");
 }

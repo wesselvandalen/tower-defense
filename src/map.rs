@@ -8,10 +8,36 @@ pub struct Map {
 }
 
 impl Map {
-    pub fn new() -> Self {
+    pub fn new_empty() -> Self {
         Self {
             size: (6, 12),
             path: Vec::new(),
+            towers: Vec::new(),
+        }
+    }
+
+    pub fn new_map1() -> Self {
+        let path = vec![
+            (1, 1),
+            (2, 2)
+        ];
+
+        Self {
+            size: (6, 12),
+            path,
+            towers: Vec::new(),
+        }
+    }
+
+    pub fn new_map2() -> Self {
+        let path = vec![
+            (2, 2),
+            (3, 3)
+        ];
+
+        Self {
+            size: (6, 12),
+            path,
             towers: Vec::new(),
         }
     }
