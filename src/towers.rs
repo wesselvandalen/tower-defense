@@ -1,6 +1,9 @@
 pub enum Tower {
-    BasicMonkey {
-        damage  : usize,
-        speed   : usize
-    }
+    BasicMonkey(Stats)
+}
+
+
+struct Stats {
+    damage  : usize,
+    speed   : usize,
 }
