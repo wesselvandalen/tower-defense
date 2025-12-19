@@ -15,4 +15,8 @@ impl Map {
             towers: Vec::new(),
         }
     }
+
+    pub fn draw(&self) {
+        println!("{:#?}", self.path);
+    }
 }

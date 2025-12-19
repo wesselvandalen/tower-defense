@@ -1,9 +1,8 @@
 mod map;
 mod towers;
-use towers::*;
+use map::Map;
 
 fn main() {
-
-
-    println!("Hello, world!");
+    let map = Map::new();
+    map.draw();
 }
