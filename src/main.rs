@@ -17,7 +17,7 @@ use crossterm::cursor::Hide;
 
 fn main() -> IOResult<()> {
     let mut map = Map::new_map1();
-    let mut margin = Margin::new(18);
+    let mut margin = Margin::new(17);
 
     let mut terminal = stdout();
 

@@ -64,7 +64,16 @@ impl Margin {
             queue!(
                 stdout,
                 MoveTo(x, y),
-                Print("|"),
+                Print("│"),
+            )?;
+        }
+
+        let y = 2;
+        for x in x+1..stdout_x {
+            queue!(
+                stdout,
+                MoveTo(x, y),
+                Print("─"),
             )?;
         }
 
@@ -72,10 +81,12 @@ impl Margin {
         // Print the user information
         queue!(
             stdout,
-            MoveTo(x+2, 0),
+            MoveTo(x+3, 0),
+            SetForegroundColor(Color::Red),
             Print(format!("Health: {}", self.user_health)),
 
-            MoveTo(x+2, 1),
+            MoveTo(x+3, 1),
+            SetForegroundColor(Color::Yellow),
             Print(format!("Money : {}", self.user_money)),
         )?;
 
