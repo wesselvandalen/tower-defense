@@ -1,8 +1,17 @@
 use crate::towers::Tower;
 
+use std::io::{Write, Stdout};
+
+use crossterm::terminal::{Clear, ClearType};
+
+use crossterm::{queue, QueueableCommand, cursor};
+use crossterm::style::{Color, SetBackgroundColor, SetForegroundColor, Print};
+
+use std::io::Result as IOResult;
+
 #[derive(Debug)]
 pub struct Map {
-    size: (usize, usize),
+    size: (u16, u16),
     path: Vec<(usize, usize)>,
     towers: Vec<(usize, usize, Tower)>,
 }
@@ -40,6 +49,37 @@ impl Map {
             path,
             towers: Vec::new(),
         }
+    }
+
+
+    /// Draws the map to a terminal
+    /// 
+    pub fn draw(&self, stdout: &mut Stdout) -> IOResult<()> {
+        // Draw background
+
+        // Clear terminal. Set background and foreground color to green
+        let background = Color::Green;
+        let foreground = Color::Green;
+        queue!(
+            stdout,
+            Clear(ClearType::All),
+            SetBackgroundColor(background),
+            SetForegroundColor(foreground),
+        )?;
+
+        // Loop over the entire map and set it to green
+        for x in 0..self.size.0 {
+            for y in 0..self.size.1 {
+                queue!(
+                    stdout, 
+                    cursor::MoveTo(x, y),
+                    Print("█"),
+                )?;
+            }
+        }
+
+        stdout.flush()?;
+        Ok(())
     }
 
     pub fn set_path(&mut self, path: Vec<(usize, usize)>) {

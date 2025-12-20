@@ -4,8 +4,20 @@ mod towers;
 use towers::*;
 use map::Map;
 
-fn main() {
-    let mut map = Map::new_map1();
+use std::io::Result as IOResult;
+use std::io::{self, Write, stdout};
+use crossterm::{QueueableCommand};
+use crossterm::terminal::{enable_raw_mode, Clear, ClearType};
 
-    println!("Hello, world!");
+fn main() -> IOResult<()> {
+    let mut map = Map::new_map1();
+    
+    let mut terminal = stdout();
+    enable_raw_mode()?;
+
+    loop {
+        map.draw(&mut terminal)?;
+    }
+
+    Ok(())
 }
