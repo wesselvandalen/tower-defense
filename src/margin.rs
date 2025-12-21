@@ -12,7 +12,6 @@ use crossterm::style::{
 };
 
 use crate::towers::Tower;
-use crate::PrintLines;
 
 /// The information margin at the right of the screen
 /// 
