@@ -7,13 +7,29 @@ use map::Map;
 use margin::Margin;
 
 use std::io::Result as IOResult;
-use std::io::{self, Write, stdout};
+use std::io::{self, Write, stdout, Stdout};
 
 use std::time::{Instant, Duration};
 
-use crossterm::{QueueableCommand};
-use crossterm::terminal::{enable_raw_mode, Clear, ClearType};
+use crossterm::{cursor, queue, QueueableCommand};
+use crossterm::terminal::{
+    enable_raw_mode, 
+    disable_raw_mode,
+    Clear, 
+    ClearType
+};
 use crossterm::cursor::Hide;
+use crossterm::event::{
+    self, 
+    Event,
+    KeyCode,
+    KeyModifiers,
+};
+use crossterm::style::{
+    SetBackgroundColor,
+    SetForegroundColor,
+    Color,
+};
 
 fn main() -> IOResult<()> {
     let mut map = Map::new_map1();
@@ -25,23 +41,68 @@ fn main() -> IOResult<()> {
     enable_raw_mode()?;
     terminal.queue(Hide)?;
 
+    // timestamp for last time screen was drawn to. Used to cap fps
+    let mut last_draw = Instant::now();
+
     loop {
-        let start_time = Instant::now();
+        // This while block runs while there is a user event happening
+        while event::poll(Duration::ZERO).unwrap() {
+            let event =  event::read()?;
+            handle_input(event, &mut terminal)?;
+        }
 
-        // Clear screen
-        terminal.queue(Clear(ClearType::All))?;
+        // Only draw to screen every 60 fps
+        let et = last_draw.elapsed();
+        if et >= Duration::from_millis(1000) / 60 {
+            // Clear screen
+            terminal.queue(Clear(ClearType::All))?;
 
-        // Draw map on the screen
-        map.draw(&mut terminal)?;
+            // Draw map on the screen
+            map.draw(&mut terminal)?;
 
-        // Draw margin on screen
-        margin.draw(&mut terminal)?;
+            // Draw margin on screen
+            margin.draw(&mut terminal)?;
+
+            last_draw = Instant::now();
+        }
+    }
+}
 
 
-        // do nothing to keep fps capped at {insert desired fps here}
-        let et = start_time.elapsed();
-        while et < Duration::from_millis(1000) / 60 {}
+/// Handles user input
+/// 
+fn handle_input(event: Event, terminal: &mut Stdout) -> IOResult<()> {
+    match event {
+        Event::Key(key_event) => handle_key_input(key_event, terminal),
+        _ => Ok(())
+    }
+}
+
+
+/// Handles key events
+/// 
+fn handle_key_input(event: event::KeyEvent, terminal: &mut Stdout) -> IOResult<()> {
+    // Ctrl + c to stop program
+    if event.code == KeyCode::Char('c') && event.modifiers == KeyModifiers::CONTROL {
+        close_program(terminal)?;
     }
 
     Ok(())
+}
+
+
+/// Logic to handle stopping the program
+/// 
+fn close_program(terminal: &mut Stdout) -> IOResult<()> {
+    disable_raw_mode()?;
+
+    queue!(
+        terminal,
+        Clear(ClearType::All),
+        SetBackgroundColor(Color::Black),
+        SetForegroundColor(Color::White),
+        cursor::Show,
+    )?;
+
+    panic!();
 }
