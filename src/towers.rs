@@ -4,33 +4,86 @@ pub enum Tower {
     FireTower(Stats)
 }
 
+
 impl Tower {
     pub fn new_water_tower() -> Self {
-        Self::WaterTower(Stats::new(10, 2))
+        Self::WaterTower(Stats::new(10, 2, 100))
     }
 
     pub fn new_fire_tower() -> Self {
-        Self::FireTower(Stats::new(16, 1))
+        Self::FireTower(Stats::new(16, 1, 150))
     }
 
 
+    /// Returns a string representation of how each tower is to be drawn in the margin
+    /// 
+    pub fn to_print_str(&self) -> String {
+        match self {
+            Tower::FireTower(stats) => Tower::fire_tower_str(stats),
+            Tower::WaterTower(stats) => Tower::water_tower_str(stats)
+        }
+    }
 
-    // fire, lighting
+
+    /// Returns the string representation of the fire tower
+    /// 
+    fn fire_tower_str(stats: &Stats) -> String {
+        "".to_string()
+        + "┌───┐\n"
+        + "│ ^ │\n"
+        + "└───┘\n"
+    }
+
+
+    /// Returns the string representation of the water tower
+    /// 
+    fn water_tower_str(stats: &Stats) -> String {
+        "".to_string()
+        + "┌───┐\n"
+        + "│ ~ │\n"
+        + "└───┘\n"
+    }
 }
+
+
 
 #[derive(Debug)]
 pub struct Stats {
     damage  : usize,
     speed   : usize,
+    cost   : usize,
 }
 
+
 impl Stats {
-    pub fn new(damage: usize, speed: usize) -> Self {
-        Self { damage, speed }
+    pub fn new(damage: usize, speed: usize, cost: usize) -> Self {
+        Self { damage, speed, cost }
     }
     
+
     pub fn level_up(&mut self) {
         self.damage += 10;
         self.speed += 1;
+    }
+
+
+    /// Returns the damage of the tower
+    /// 
+    pub fn damage(&self) -> usize {
+        self.damage
+    }
+
+
+    /// Returns the speed of the tower
+    /// 
+    pub fn speed(&self) -> usize {
+        self.speed
+    }
+
+
+    /// Returns the cost of the tower
+    /// 
+    pub fn cost(&self) -> usize {
+        self.cost
     }
 }

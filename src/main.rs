@@ -11,7 +11,7 @@ use std::io::{self, Write, stdout, Stdout};
 
 use std::time::{Instant, Duration};
 
-use crossterm::{cursor, queue, QueueableCommand};
+use crossterm::{cursor, execute, queue, QueueableCommand};
 use crossterm::terminal::{
     enable_raw_mode, 
     disable_raw_mode,
@@ -116,10 +116,12 @@ pub struct PrintLines<'a>(&'a str);
 use crossterm::Command;
 impl<'a> Command for PrintLines<'a> {
     fn write_ansi(&self, f: &mut impl core::fmt::Write) -> core::fmt::Result {
-        for line in self.0.lines() {
+        cursor::SavePosition.write_ansi(f)?;
+
+        for (i, line) in self.0.lines().enumerate() {
             Print(line).write_ansi(f)?;
-            cursor::MoveDown(1).write_ansi(f)?;
-            cursor::MoveLeft(line.len() as u16).write_ansi(f)?;
+            cursor::RestorePosition.write_ansi(f)?;
+            cursor::MoveDown((i+1) as u16).write_ansi(f)?;
         }
         
         Ok(())
