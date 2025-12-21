@@ -110,8 +110,7 @@ impl Margin {
         stdout.queue(MoveTo(x, 4))?;
 
         for tower in Tower::iter_all_towers() {
-            let s = Tower::to_print_str(&tower);
-            stdout.queue(PrintLines(&s))?;
+            tower.draw(stdout)?;
         }
 
         Ok(())

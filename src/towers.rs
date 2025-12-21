@@ -1,3 +1,13 @@
+use std::io::{Write, Stdout, Result as IOResult};
+
+use crossterm::queue;
+use crossterm::style::{
+    Color,
+    SetForegroundColor,
+};
+
+use crate::PrintLines;
+
 #[derive(Debug, Clone)]
 pub enum Tower {
     WaterTower(Stats),
@@ -15,33 +25,51 @@ impl Tower {
     }
 
 
-    /// Returns a string representation of how each tower is to be drawn in the margin
+    /// Draws the tower to the screen
     /// 
-    pub fn to_print_str(&self) -> String {
+    pub fn draw(&self, stdout: &mut Stdout) -> IOResult<()> {
         match self {
-            Tower::FireTower(stats) => Tower::fire_tower_str(stats),
-            Tower::WaterTower(stats) => Tower::water_tower_str(stats)
+            Tower::FireTower(stats) => Tower::draw_fire_tower(stdout),
+            Tower::WaterTower(stats) => Tower::draw_water_tower(stdout)
         }
     }
 
 
-    /// Returns the string representation of the fire tower
+    /// Draws fire tower
     /// 
-    fn fire_tower_str(stats: &Stats) -> String {
-        "".to_string()
+    fn draw_fire_tower(stdout: &mut Stdout) -> IOResult<()> {
+        let s = "".to_string()
         + "┌───┐\n"
         + "│ ^ │\n"
-        + "└───┘\n"
+        + "└───┘\n";
+
+        queue!(
+            stdout,
+            SetForegroundColor(Color::Red),
+            PrintLines(&s),
+        )?;
+
+        stdout.flush()?;
+        Ok(())
     }
 
 
     /// Returns the string representation of the water tower
     /// 
-    fn water_tower_str(stats: &Stats) -> String {
-        "".to_string()
+    fn draw_water_tower(stdout: &mut Stdout) -> IOResult<()> {
+        let s = "".to_string()
         + "┌───┐\n"
         + "│ ~ │\n"
-        + "└───┘\n"
+        + "└───┘\n";
+
+        queue!(
+            stdout,
+            SetForegroundColor(Color::Blue),
+            PrintLines(&s),
+        )?;
+
+        stdout.flush()?;
+        Ok(())
     }
 
 
