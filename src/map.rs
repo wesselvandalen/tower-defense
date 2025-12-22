@@ -55,9 +55,7 @@ impl Map {
     /// Draws the map to a terminal
     /// 
     pub fn draw(&self, stdout: &mut Stdout) -> IOResult<()> {
-        // Draw background
-
-        // Clear terminal. Set background and foreground color to green
+        // Set background and foreground color to green
         let background = Color::Black;
         let foreground = Color::Green;
         queue!(
