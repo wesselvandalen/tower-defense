@@ -126,4 +126,9 @@ impl<'a> Command for PrintLines<'a> {
         
         Ok(())
     }
+
+    #[cfg(windows)]
+    fn execute_winapi(&self) -> IOResult<()> {
+        Ok(())
+    }
 }
