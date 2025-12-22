@@ -12,8 +12,8 @@ use std::io::Result as IOResult;
 #[derive(Debug)]
 pub struct Map {
     size: (u16, u16),
-    path: Vec<(usize, usize)>,
-    towers: Vec<(usize, usize, Tower)>,
+    path: Vec<(u16, u16)>,
+    towers: Vec<(u16, u16, Tower)>,
 }
 
 impl Map {
@@ -77,11 +77,22 @@ impl Map {
             }
         }
 
+
+        // Loop over all path placements and draw them
+        stdout.queue(SetForegroundColor(Color::DarkGrey))?;
+        for (x, y) in &self.path {
+            queue!(
+                stdout,
+                cursor::MoveTo(*x, *y),
+                Print("█"),
+            )?;
+        }
+
         stdout.flush()?;
         Ok(())
     }
 
-    pub fn set_path(&mut self, path: Vec<(usize, usize)>) {
+    pub fn set_path(&mut self, path: Vec<(u16, u16)>) {
         self.path = path;
     }
 }
