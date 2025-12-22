@@ -55,7 +55,6 @@ fn main() -> IOResult<()> {
         // Only draw to screen every 60 fps
         let et = last_draw.elapsed();
         if et >= Duration::from_millis(1000) / 60 {
-            execute!(terminal, terminal::BeginSynchronizedUpdate)?;
             // Clear screen
             terminal.queue(Clear(ClearType::All))?;
 
@@ -65,7 +64,6 @@ fn main() -> IOResult<()> {
             // Draw margin on screen
             margin.draw(&mut terminal)?;
 
-            execute!(terminal, terminal::EndSynchronizedUpdate)?;
             last_draw = Instant::now();
         }
     }
