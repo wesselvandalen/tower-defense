@@ -158,12 +158,12 @@ pub struct Stats {
 
 
 impl Stats {
-    pub fn new(damage: usize, speed: usize, cost: usize) -> Self {
+    fn new(damage: usize, speed: usize, cost: usize) -> Self {
         Self { damage, speed, cost }
     }
     
 
-    pub fn level_up(&mut self) {
+    fn level_up(&mut self) {
         self.damage += 10;
         self.speed += 1;
     }
@@ -171,21 +171,21 @@ impl Stats {
 
     /// Returns the damage of the tower
     /// 
-    pub fn damage(&self) -> usize {
+    fn damage(&self) -> usize {
         self.damage
     }
 
 
     /// Returns the speed of the tower
     /// 
-    pub fn speed(&self) -> usize {
+    fn speed(&self) -> usize {
         self.speed
     }
 
 
     /// Returns the cost of the tower
     /// 
-    pub fn cost(&self) -> usize {
+    fn cost(&self) -> usize {
         self.cost
     }
 }
