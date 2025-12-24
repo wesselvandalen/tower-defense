@@ -16,47 +16,12 @@ pub enum Tower {
 
 
 impl Tower {
-    /// Creates a new water tower
-    /// 
     pub fn new_water_tower() -> Self {
         Self::WaterTower(Stats::new(10, 2, 100))
     }
 
-
-    /// Creates a new fire tower
-    /// 
     pub fn new_fire_tower() -> Self {
         Self::FireTower(Stats::new(16, 1, 150))
-    }
-
-
-    /// Returns the damage of the tower
-    /// 
-    pub fn damage(&self) -> usize {
-        match self {
-            Self::WaterTower(stat) => stat.damage(),
-            Self::FireTower(stat) => stat.damage(),
-        }
-    }
-
-
-    /// Returns the Speed of the tower
-    /// 
-    pub fn speed(&self) -> usize {
-        match self {
-            Self::WaterTower(stat) => stat.speed(),
-            Self::FireTower(stat) => stat.speed(),
-        }
-    }
-
-
-    /// Returns the Cost of the tower
-    /// 
-    pub fn cost(&self) -> usize {
-        match self {
-            Self::WaterTower(stat) => stat.cost(),
-            Self::FireTower(stat) => stat.cost(),
-        }
     }
 
 
@@ -84,7 +49,7 @@ impl Tower {
             PrintLines(&s),
         )?;
 
-        //stdout.flush()?;
+        stdout.flush()?;
         Ok(())
     }
 
@@ -103,7 +68,7 @@ impl Tower {
             PrintLines(&s),
         )?;
 
-        //stdout.flush()?;
+        stdout.flush()?;
         Ok(())
     }
 
@@ -153,39 +118,41 @@ impl Iterator for IterAllTowers {
 pub struct Stats {
     damage  : usize,
     speed   : usize,
-    cost    : usize,
+    cost   : usize,
 }
 
 
 impl Stats {
-    fn new(damage: usize, speed: usize, cost: usize) -> Self {
+    /// Returns a new instance of a Stats given arguments.
+    /// 
+    pub fn new(damage: usize, speed: usize, cost: usize) -> Self {
         Self { damage, speed, cost }
     }
     
-
-    fn level_up(&mut self) {
+    /// Levels up the damage and speed of stats.
+    /// 
+    pub fn level_up(&mut self) {
         self.damage += 10;
         self.speed += 1;
     }
 
-
     /// Returns the damage of the tower
     /// 
-    fn damage(&self) -> usize {
+    pub fn damage(&self) -> usize {
         self.damage
     }
 
 
     /// Returns the speed of the tower
     /// 
-    fn speed(&self) -> usize {
+    pub fn speed(&self) -> usize {
         self.speed
     }
 
 
     /// Returns the cost of the tower
     /// 
-    fn cost(&self) -> usize {
+    pub fn cost(&self) -> usize {
         self.cost
     }
 }
